@@ -38,8 +38,9 @@ class Oven(pydle.Client):
       for i in self.raw:
         await self.raw[i](self, chan,source,msg)
       if msg[:len(self.prefix)] == self.prefix:
+        msg = msg[len(self.prefix):]
         cmd = msg.split(' ')[0]
-        msg = msg[len(cmd):]
+        msg = msg[len(cmd)+1:]
         if cmd in self.cmd:
           await self.cmd[cmd](self, chan, source, msg)
   async def is_admin(self, nickname):
