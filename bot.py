@@ -12,9 +12,6 @@ class Oven(pydle.Client):
     self.raw = {}
     self.help = {}
 
-    print('joining channels...')
-    for i in self.chansjoin:
-      await self.join(i)
     print('loading modules...')
     await self.loadMods()
     print('Done!')
@@ -58,7 +55,6 @@ class Oven(pydle.Client):
 
 if __name__ == "__main__":
   client = Oven('oven', realname='Oven IRC Bot')
-  client.chansjoin = ['#bots']
   client.admins = ['lickthecheese']
   client.prefix = 'ov '
   client.run('team.tilde.chat', tls=True, tls_verify=False)
