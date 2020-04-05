@@ -2,8 +2,13 @@
 import importlib
 
 
+async def commit(self, chan, source, msg):
+  await self.quit('{} told me to commit {}'.format(source,msg))
+
 async def quit(self, chan, source, msg):
   await self.quit('{} told me to {}'.format(source,msg))
+
+
 
 async def reloadmods(self, chan, source, msg):
   await self.message(chan, 'reloading modules...')
@@ -19,7 +24,8 @@ async def reloadmods(self, chan, source, msg):
 
 commands = {
   'quit': quit,
-  'reload': reloadmods
+  'reload': reloadmods,
+  'commit': commit
 }
 
 async def adminHandle(self, chan, source, msg):
@@ -28,6 +34,7 @@ async def adminHandle(self, chan, source, msg):
     if len(msg) < 1 or not msg[0] in commands:
       await self.message(chan, 'you press the wrong button on the oven and it burns you')
       return
+    print('[ADMIN MODULE] {} told me to {}!!!'.format(source,msg[0]))
     await commands[msg.pop(0)](self, chan, source, ' '.join(msg))
   else:
     await self.message(chan, 'you try to open it, but the oven is locked')

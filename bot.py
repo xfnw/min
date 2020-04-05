@@ -61,5 +61,5 @@ if __name__ == "__main__":
   client.chansjoin = ['#bots']
   client.admins = ['lickthecheese']
   client.prefix = 'ov '
-  client.run('irc.tilde.chat', tls=True, tls_verify=False)
+  client.run('team.tilde.chat', tls=True, tls_verify=False)
 
