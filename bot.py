@@ -14,6 +14,9 @@ class Oven(pydle.Client):
 
     print('loading modules...')
     await self.loadMods()
+    print('joining channels')
+    for i in self.chansjoin:
+      await self.join(i)
     print('Done!')
 
   async def loadMods(self):
@@ -25,7 +28,9 @@ class Oven(pydle.Client):
       await m.init(self)
       self.modules[i] = m
 
-
+  async def on_invite(self, channel, by):
+    print('{} invited me to {}!'.format(by, channel))
+    await self.join(channel)
 
 
   async def on_message(self, chan, source, msg):

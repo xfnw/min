@@ -20,12 +20,20 @@ async def reloadmods(self, chan, source, msg):
     await self.modules[i].init(self)
   await self.message(chan, 'done! did something break? if so you might need to restart')
 
+async def part(self, chan, source, msg):
+  await self.message(chan, 'bye {}'.format(msg))
+  await self.part(msg)
 
+async def join(self, chan, source, msg):
+  await self.message(chan, 'joined {}'.format(msg))
+  await self.join(msg)
 
 commands = {
   'quit': quit,
   'reload': reloadmods,
-  'commit': commit
+  'commit': commit,
+  'part': part,
+  'join': join
 }
 
 async def adminHandle(self, chan, source, msg):
