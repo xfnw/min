@@ -20,6 +20,8 @@ async def reloadmods(self, chan, source, msg):
     await self.modules[i].init(self)
   await self.message(chan, 'done! did something break? if so you might need to restart')
 
+  
+
 async def part(self, chan, source, msg):
   await self.message(chan, 'bye {}'.format(msg))
   await self.part(msg)
@@ -28,12 +30,23 @@ async def join(self, chan, source, msg):
   await self.message(chan, 'joined {}'.format(msg))
   await self.join(msg)
 
+async def joins(self, chan, source, msg):
+  for i in self.joins:
+    await self.join(i)
+
+async def ev(self, chan, source, msg):
+  msg = msg.split(' ')
+  setattr(self,msg.pop(0), eval(' '.join(msg)))
+  await self.message(chan, 'ok')
+
 commands = {
   'quit': quit,
   'reload': reloadmods,
   'commit': commit,
   'part': part,
-  'join': join
+  'join': join,
+  'eval': ev,
+  'joins': joins
 }
 
 async def adminHandle(self, chan, source, msg):
@@ -50,3 +63,7 @@ async def adminHandle(self, chan, source, msg):
 
 async def init(self):
   self.cmd['admin'] = adminHandle
+  self.joins = ["#chaos", "#lickthecheese", "#windowsloser", "#cminecraft", "#team"]
+
+
+
