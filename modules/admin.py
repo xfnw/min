@@ -36,7 +36,7 @@ async def joins(self, chan, source, msg):
 
 async def ev(self, chan, source, msg):
   msg = msg.split(' ')
-  exec(' '.join(msg))
+  self.more[chan] = exec(' '.join(msg))
   await self.message(chan, 'ok')
 
 commands = {

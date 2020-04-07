@@ -73,7 +73,7 @@ async def bake(self, c, n, m):
 
 async def invsee(self, c, n, m):
   if len(m) < 1:
-    m = n
+    m = n.strip()
   inv = self.db['inv']
   it = [ i['item'] for i in inv.find(name=m) ]
   if len(it) < 1:
@@ -123,7 +123,14 @@ async def init(self):
     'phallic': 65,
     'pizza': 34,
     'hairball': 6,
-    'cookie': 44
+    'cookie': 44,
+    'pancake': 12,
+    'rice': 29,
+    'mess': 14,
+    'sandwich':55,
+    'wafer': 56,
+    'pi': 31,
+    'fbi': 80
   }
   self.bakedPrice = dict((v,k) for k,v in self.bakedGoods.items())
 
