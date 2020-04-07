@@ -57,7 +57,7 @@ async def invsee(self, c, n, m):
   if len(it) < 1:
     await self.message(c, 'you look through your kitchen and see nothing')
   else:
-    await self.message(c, 'you look through your kitchen and see {}, with a combined value of ${}'.format(' '.join(it), sum([self.bakedGoods[i] for i in it])/10))
+    await self.message(c, 'you look through your kitchen and see {}, with a combined value of ${}'.format(' '.join(it), sum([self.bakedGoods[i] for i in it if i in self.bakedGoods])/10))
 
 async def generate(self, c, n, m):
   if int(random.uniform(0,20)) == 1:
