@@ -59,6 +59,15 @@ async def invsee(self, c, n, m):
   else:
     await self.message(c, 'you look through your kitchen and see {}, with a combined value of ${}'.format(' '.join(it), sum([self.bakedGoods[i] for i in it])/10))
 
+async def generate(self, c, n, m):
+  if int(random.uniform(0,20)) == 1:
+    inv = self.db['inv']
+    inv.insert(dict(name=n, item=random.choice(list(self.bakedGoods.keys()))))
+    qed = self.db['qed']
+    if qed.find_one(name=n) == None:
+      qed.insert(dict(name=n))
+      await self.message(n, 'Ding! you left some stuff in the oven! (you were lucky and found an item!!!) check out what you have with "ov items" and you can do cool stuff like bake them! (i will not query you again, so periodically check for new items!)')
+
 async def init(self):
   self.db = dataset.connect('sqlite:///database.db')
 
@@ -67,6 +76,8 @@ async def init(self):
   self.cmd['inv'] = invsee
   self.cmd['items'] = invsee
   self.cmd['goods'] = invsee
+
+  self.raw['genGoods'] = generate
 
   self.bakedGoods = {
     'cheese': 50,
