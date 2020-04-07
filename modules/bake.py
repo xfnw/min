@@ -34,13 +34,14 @@ async def bake(self, c, n, m):
   inv.delete(id=its['id'])
   
   # oooo randomize what will pop out
-  value += random.uniform(-15, 15)
+  value += random.uniform(-20, 20)
   
   # choose the output
   while value not in list(self.bakedPrice.keys()):
     value = int(value - 1)
     if value < 0:
-      value = 0
+      await self.message(c, 'you notice some smoke, shouldint have put that {} in the oven!'.format(m))
+      return
 
   newitem = self.bakedPrice[value]
 
@@ -56,7 +57,7 @@ async def invsee(self, c, n, m):
   if len(it) < 1:
     await self.message(c, 'you look through your kitchen and see nothing')
   else:
-    await self.message(c, 'you look through your kitchen and see {}'.format(' '.join(it)))
+    await self.message(c, 'you look through your kitchen and see {}, with a combined value of ${}'.format(' '.join(it), sum([self.bakedGoods[i] for i in it])/10))
 
 async def init(self):
   self.db = dataset.connect('sqlite:///database.db')
