@@ -77,6 +77,10 @@ async def init(self):
   self.cmd['items'] = invsee
   self.cmd['goods'] = invsee
 
+  self.help['bake'] = ['bake <item> - bake some stuff', 'dont dirty the oven!']
+  self.help['cheat'] = ['cheat <user> <item> - you are bad if you use it', 'bad bad bad bad']
+  self.help['items'] = ['items - show the stuff in your inventory (more for aliases)', 'aliases for items include: inv, goods']
+
   self.raw['genGoods'] = generate
 
   self.bakedGoods = {

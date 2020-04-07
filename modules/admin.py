@@ -64,6 +64,15 @@ async def adminHandle(self, chan, source, msg):
 async def init(self):
   self.cmd['admin'] = adminHandle
   self.joins = ["#chaos", "#lickthecheese", "#windowsloser", "#cminecraft", "#team"]
+  
+  self.help['admin'] = ['admin - various bot owner commands (more for subcommands)', 'sub-commands of admin, for more info do help admin <command>: quit reload commit part join joins eval']
+  self.help['admin quit'] = ['admin quit <message> - make the bot disconnect','no']
+  self.help['admin reload'] = ['admin reload - reload the modules and configs', 'nothing to see here']
+  self.help['admin commit'] = ['admin commit <action> - oh no (more)', 'suggested with <3 by khux']
+  self.help['admin part'] = ['admin part <channel> - leave a channel', ':o']
+  self.help['admin join'] = ['admin join <channel> - make the bot join a channel','...']
+  self.help['admin joins'] = ['admin joins - join more channels', 'dont reconnect to a bunch of chans when the bots crashing etc']
+  self.help['admin eval'] = ['admin eval <command> - absolute power corrupts absolutely', 'lmao']
 
 
 
