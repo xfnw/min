@@ -2,6 +2,16 @@
 import dataset
 import random
 
+async def purge(self, c, n, m):
+  if not await self.is_admin(n):
+    await self.message(c,'{} was a bad bad bad. {} got sucked into the oven'.format(n,n))
+  if len(m) < 1:
+    await message(c, 'i refuse.')
+    return
+  inv = self.db['inv']
+  inv.delete(name=m)
+  await self.message(c,'ok lel')
+
 
 async def cheat(self, c, n, m):
   if not await self.is_admin(n):
@@ -13,6 +23,18 @@ async def cheat(self, c, n, m):
   inv = self.db['inv']
   inv.insert(dict(name=m[0], item=m[1]))
   await self.message(c,'ok il allow this once')
+
+async def give(self, c, n, m):
+  m = m.split(' ')
+  if len(m) < 2:
+    await self.message(c, 'dummy thicc you cant give air!')
+  inv = self.db['inv']
+  its = inv.find_one(name=n, item=m[1])
+  if its == None:
+    await self.message(c, 'dummy thicc you cant trick me!')
+  inv.delete(id=its['id'])
+  inv.insert(dict(name=m[0], item=its['item']))
+  await self.message(c, 'you gave {} a {}!'.format(m[0], m[1]))
 
 async def bake(self, c, n, m):
   if len(m) < 1:
@@ -76,10 +98,14 @@ async def init(self):
   self.cmd['inv'] = invsee
   self.cmd['items'] = invsee
   self.cmd['goods'] = invsee
+  self.cmd['purge'] = purge
+  self.cmd['give'] = give
 
   self.help['bake'] = ['bake <item> - bake some stuff', 'dont dirty the oven!']
   self.help['cheat'] = ['cheat <user> <item> - you are bad if you use it', 'bad bad bad bad']
-  self.help['items'] = ['items - show the stuff in your inventory (more for aliases)', 'aliases for items include: inv, goods']
+  self.help['items'] = ['items [user] - show the stuff in your inventory (more for aliases)', 'aliases for items include: inv, goods']
+  self.help['purge'] = ['purge <user> - clear their inv lel', 'nooo admin abuse im calling the cops']
+  self.help['give'] = ['give <user> <item> - give someone something from your inventory', 'thats very nice of you!']
 
   self.raw['genGoods'] = generate
 
