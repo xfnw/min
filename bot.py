@@ -56,6 +56,8 @@ class Oven(pydle.Client):
 
     return admin
 
+  async def on_private_message(self, trash, source, msg):
+    await self.on_message(source, source, msg)
 
 
 if __name__ == "__main__":

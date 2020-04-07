@@ -60,7 +60,7 @@ async def invsee(self, c, n, m):
     await self.message(c, 'you look through your kitchen and see {}, with a combined value of ${}'.format(' '.join(it), sum([self.bakedGoods[i] for i in it if i in self.bakedGoods])/10))
 
 async def generate(self, c, n, m):
-  if int(random.uniform(0,20)) == 1:
+  if int(random.uniform(0,30)) == 1:
     inv = self.db['inv']
     inv.insert(dict(name=n, item=random.choice(list(self.bakedGoods.keys()))))
     qed = self.db['qed']
