@@ -57,7 +57,8 @@ class Oven(pydle.Client):
     return admin
 
   async def on_private_message(self, trash, source, msg):
-    await self.on_message(source, source, msg)
+    if source != self.nickname:
+      await self.message(source, 'Beep beep boop! im a bot, but i do not like privmsgs, please go to #bots or another channel that i am in!')
 
 
 if __name__ == "__main__":
