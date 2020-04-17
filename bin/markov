@@ -1,0 +1,15 @@
+#!/bin/bash
+
+cat ~/irclogs/tc/* | grep '>' | awk '{$1=""; $2=""; $3=""}1' | shuf -n 500000 > /tmp/markylol
+
+nextword(){ awk '{for (I=1;I<=NF;I++) if ($I == "'$1'") {print $(I+1)};}' /tmp/markylol | shuf -n 1 ; }
+
+
+PASTWORD=$1
+
+makesent(){ printf "$PASTWORD " ; PASTWORD=`nextword $PASTWORD | tr '"' "'"` ; [ -z "$PASTWORD" ] || makesent ; }
+
+makesent
+
+echo
+
