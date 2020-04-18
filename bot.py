@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-import pydle, asyncio, sys, os
+import pydle, asyncio, sys, os, time
 
 class Oven(pydle.Client):
   async def on_connect(self):
@@ -11,6 +11,8 @@ class Oven(pydle.Client):
     self.cmd = {}
     self.raw = {}
     self.help = {}
+
+    self.timeout=time.time()+1
 
     print('loading modules...')
     await self.loadMods()
@@ -36,10 +38,18 @@ class Oven(pydle.Client):
   async def on_message(self, chan, source, msg):
     if source != self.nickname:
       if msg == '!botlist':
-        await self.message(chan, 'hoinlo im oven im owned by lickthecheese and bake stuff for you')
+        await self.message(chan, 'hoinlo im oven im owned by lickthecheese and bake stuff for you and other beep boop fun stuff')
       for i in self.raw:
         await self.raw[i](self, chan,source,msg)
       if msg[:len(self.prefix)] == self.prefix:
+        if time.time() < self.timeout:
+          self.timeout += 2
+          print('messages are being sent too fast!')
+          return
+
+        if time.time()-1 < self.timeout:
+          await self.message(chan, 'woah woah, slow it down there, or il get mad and wont bake your food')
+        self.timeout = time.time()+0.5
         msg = msg[len(self.prefix):]
         cmd = msg.split(' ')[0]
         msg = msg[len(cmd)+1:]
@@ -58,12 +68,12 @@ class Oven(pydle.Client):
 
   async def on_private_message(self, trash, source, msg):
     if source != self.nickname:
-      await self.message(source, 'Beep beep boop! im a bot, but i do not like privmsgs, please go to #bots or another channel that i am in!')
+      await self.on_message(source, source, msg)
 
 
 if __name__ == "__main__":
   client = Oven('oven', realname='Oven IRC Bot')
-  client.admins = ['lickthecheese']
+  client.admins = ['lickthecheese', 'ben', 'cmccabe']
   client.prefix = 'ov '
   client.run('team.tilde.chat', tls=True, tls_verify=False)
 
