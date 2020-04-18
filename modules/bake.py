@@ -43,7 +43,7 @@ async def bake(self, c, n, m):
   inv = self.db['inv']
   its = (inv.find_one(name=n, item=m))
   if its == None:
-    await self.message(c, 'You dont have any {}'.format(m))
+    await self.message(c, 'You dont have any {}'.format(m[:10]))
     return
   
   # if item has value, use that, else use a okay value
@@ -80,6 +80,7 @@ async def invsee(self, c, n, m):
     await self.message(c, 'you look through your kitchen and see nothing')
   else:
     await self.message(c, 'you look through your kitchen and see {}, with a combined value of ${}'.format(' '.join(it), sum([self.bakedGoods[i] for i in it if i in self.bakedGoods])/10))
+    self.timeout += len(' '.join(it))/300
 
 async def generate(self, c, n, m):
   if int(random.uniform(0,30)) == 1:
