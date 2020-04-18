@@ -20,7 +20,7 @@ async def run(cmd):
 
 async def markov(self, c, n, m):
     m = ''.join([i for i in m if i.isalnum()])
-    if len(m) > 1:
+    if len(m) > 0:
        await self.message(c, (await run("markov '{}'".format(m)))[:-1])
        return
     await self.message(c, 'the oven went boop')

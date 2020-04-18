@@ -43,13 +43,15 @@ class Oven(pydle.Client):
         await self.raw[i](self, chan,source,msg)
       if msg[:len(self.prefix)] == self.prefix:
         if time.time() < self.timeout:
-          self.timeout += 2
-          print('messages are being sent too fast!')
+          self.timeout += 1
+          print('messages are being sent too fast! ({}s)'.format(self.timeout-time.time()))
+          if await self.is_admin(source) and msg == '{}recv'.format(self.prefix):
+            self.timeout = 0
           return
 
         if time.time()-1.5 < self.timeout:
           await self.message(chan, 'woah woah, slow it down there, or il get mad and wont bake your food')
-        self.timeout = time.time()+1
+        self.timeout = time.time()+0.5
         msg = msg[len(self.prefix):]
         cmd = msg.split(' ')[0]
         msg = msg[len(cmd)+1:]
