@@ -12,7 +12,6 @@ class Oven(pydle.Client):
     self.raw = {}
     self.help = {}
 
-    self.timeout=time.time()+1
 
     print('loading modules...')
     await self.loadMods()
@@ -38,20 +37,11 @@ class Oven(pydle.Client):
   async def on_message(self, chan, source, msg):
     if source != self.nickname:
       if msg == '!botlist':
-        await self.message(chan, 'hoinlo im oven im owned by lickthecheese and bake stuff for you and other beep boop fun stuff')
+        await self.message(chan, 'dah helooooooo i am kim jong un, pingus me to have a nice conversation')
       for i in self.raw:
         await self.raw[i](self, chan,source,msg)
       if msg[:len(self.prefix)] == self.prefix:
-        if time.time() < self.timeout:
-          self.timeout += 1
-          print('messages are being sent too fast! ({}s)'.format(self.timeout-time.time()))
-          if await self.is_admin(source) and msg == '{}recv'.format(self.prefix):
-            self.timeout = 0
-          return
 
-        if time.time()-1.5 < self.timeout:
-          await self.message(chan, 'woah woah, slow it down there, or il get mad and wont bake your food')
-        self.timeout = time.time()+0.5
         msg = msg[len(self.prefix):]
         cmd = msg.split(' ')[0]
         msg = msg[len(cmd)+1:]
@@ -70,12 +60,13 @@ class Oven(pydle.Client):
 
   async def on_private_message(self, trash, source, msg):
     if source != self.nickname:
-      await self.on_message(source, source, msg)
+      for i in self.raw:
+        await self.raw[i](self, source, source, msg)
 
 
 if __name__ == "__main__":
-  client = Oven('oven', realname='Oven IRC Bot')
+  client = Oven('kim', realname='Kim Jong Un?')
   client.admins = ['lickthecheese', 'ben', 'cmccabe']
-  client.prefix = 'ov '
+  client.prefix = 'kim: '
   client.run('team.tilde.chat', tls=True, tls_verify=False)
 
