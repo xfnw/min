@@ -54,6 +54,12 @@ async def genOut(self, noun):
 async def filter(self, c, n, m):
   if m[:5] == 'kim: ':
     m = m[5:]
+    await go(self, c, n, m)
+  elif m[:4] == 'kim ':
+    m = m[4:]
+    await go(self, c, n, m)
+
+async def go(self, c, n, m):
     await rec(self, m)
     words = m.split(' ')
     if words[0] == 'admin':
