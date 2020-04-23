@@ -35,11 +35,18 @@ async def genOut(self, noun):
   iter=0
   out = [noun]
   while (out[0] not in beg or nouns.count(out[0])-1 > iter * self.enmul) and iter < 7:
-    out = [ random.choice(list(prew.find(pro=out[0])))['pre'] ] + out
+    try:
+      out = [ random.choice(list(prew.find(pro=out[0])))['pre'] ] + out
+    except IndexError:
+      iter += 69
     iter += 1
   iter = 0
   while (out[-1] not in end or nouns.count(out[-1])-1 > iter * self.enmul) and iter < 7:
-    out.append(random.choice(list(prew.find(pre=out[-1])))['pro'])
+    
+    try:
+      out.append(random.choice(list(prew.find(pre=out[-1])))['pro'])
+    except IndexError:
+      iter += 69
     iter += 1
   return out
 
