@@ -43,7 +43,7 @@ class Oven(pydle.Client):
 
 
       if msg == '!botlist':
-        await self.message(chan, 'dah helooooooo i am kim jong un, pingus me to have a nice conversation with llckthecheese btw my source is just a different branch of oven\'s github repo')
+        await self.message(chan, 'dah helooooooo i am kim jong un, pingus me to have a nice conversation with llckthecheese (https://git.io/KimBot)')
       if msg[:len(self.prefix)] == self.prefix:
 
         msg = msg[len(self.prefix):]
