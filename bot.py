@@ -37,7 +37,7 @@ class Oven(pydle.Client):
   async def on_message(self, chan, source, msg):
     if source != self.nickname:
       if msg == '!botlist':
-        await self.message(chan, 'dah helooooooo i am kim jong un, pingus me to have a nice conversation')
+        await self.message(chan, 'dah helooooooo i am kim jong un, pingus me to have a nice conversation with llckthecheese')
       for i in self.raw:
         await self.raw[i](self, chan,source,msg)
       if msg[:len(self.prefix)] == self.prefix:
