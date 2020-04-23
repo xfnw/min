@@ -9,6 +9,8 @@ async def rec(self, m):
   end = self.db['end']
   pre = ''
   words = m.split(' ')
+  if words[0] == 'admin':
+    return
   for w in words:
     if pre == '':
       beg.insert(dict(word=w))
@@ -46,6 +48,8 @@ async def filter(self, c, n, m):
     m = m[5:]
     await rec(self, m)
     words = m.split(' ')
+    if words[0] == 'admin':
+      return
     await self.message(c, ' '.join(await genOut(self, await getNoun(self, words))))
 
 async def init(self):

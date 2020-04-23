@@ -69,7 +69,7 @@ async def adminHandle(self, chan, source, msg):
 
 async def init(self):
   self.cmd['admin'] = adminHandle
-  self.joins = ["#chaos", "#lickthecheese", "#windowsloser", "#cminecraft", "#team", "#meta", "#rscmakerspace", "#archlinux", "#tildetel", "#one", "#starlanes"]
+  self.joins = ["#chaos", "#lickthecheese", "#windowsloser", "#cminecraft", "#team", "#meta", "#rscmakerspace", "#archlinux", "#tildetel", "#one", "#starlanes", "#ipd", "#pinebox"]
   
   self.help['admin'] = ['admin - various bot owner commands (more for subcommands)', 'sub-commands of admin, for more info do help admin <command>: quit reload commit part join joins eval send']
   self.help['admin quit'] = ['admin quit <message> - make the bot disconnect','no']
