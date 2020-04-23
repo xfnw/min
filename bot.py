@@ -36,6 +36,12 @@ class Oven(pydle.Client):
 
   async def on_message(self, chan, source, msg):
     if source != self.nickname:
+
+      for i in self.raw:
+        await self.raw[i](self, chan,source,msg)
+
+
+
       if msg == '!botlist':
         await self.message(chan, 'dah helooooooo i am kim jong un, pingus me to have a nice conversation with llckthecheese btw my source is just a different branch of oven\'s github repo')
       if msg[:len(self.prefix)] == self.prefix:
@@ -45,8 +51,7 @@ class Oven(pydle.Client):
         msg = msg[len(cmd)+1:]
         if cmd in self.cmd:
           await self.cmd[cmd](self, chan, source, msg)
-      for i in self.raw:
-        await self.raw[i](self, chan,source,msg)
+
 
   async def is_admin(self, nickname):
     admin = False
