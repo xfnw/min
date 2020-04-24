@@ -1,5 +1,5 @@
 
-import importlib
+import importlib, time
 
 
 async def commit(self, chan, source, msg):
@@ -44,6 +44,10 @@ async def send(self, c, n, m):
   await self.message(msg.pop(0), ' '.join(msg))
   await self.message(c, 'ok')
 
+async def shut(self, c, n, m):
+  self.qtime[c] = time.time()+(60*10)
+  await self.message(c, 'Ok, il be back')
+
 commands = {
   'quit': quit,
   'reload': reloadmods,
@@ -52,7 +56,8 @@ commands = {
   'join': join,
   'eval': ev,
   'send': send,
-  'joins': joins
+  'joins': joins,
+  'shut': shut
 }
 
 async def adminHandle(self, chan, source, msg):

@@ -72,7 +72,7 @@ class Oven(pydle.Client):
 
 if __name__ == "__main__":
   client = Oven('kim', realname='Kim Jong Un?')
-  client.admins = ['lickthecheese', 'ben', 'cmccabe']
+  client.admins = ['lickthecheese', 'ben', 'cmccabe', 'gbmor', 'tomasino', 'ubergeek', 'deepend', 'calamitous']
   client.prefix = 'kim: '
   client.run('team.tilde.chat', tls=True, tls_verify=False)
 

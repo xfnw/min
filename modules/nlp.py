@@ -1,6 +1,7 @@
 
 import dataset
 import random
+import time
 
 async def rec(self, m):
   prew = self.db['prew']
@@ -52,6 +53,8 @@ async def genOut(self, noun):
 
 
 async def filter(self, c, n, m):
+  if c in self.qtime and self.qtime[c] > time.time():
+    return
   if m[:5] == 'kim: ':
     m = m[5:]
     await go(self, c, n, m)
@@ -68,7 +71,8 @@ async def go(self, c, n, m):
 
 async def init(self):
   self.db = dataset.connect('sqlite:///database.db')
-
+  
+  self.qtime = {}
 
   self.enmul = 1
   self.raw['nlp'] = filter
