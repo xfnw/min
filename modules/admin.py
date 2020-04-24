@@ -34,9 +34,20 @@ async def joins(self, chan, source, msg):
   for i in self.joins:
     await self.join(i)
 
+async def aexec(self, code):
+    # Make an async function with the code and `exec` it
+    exec(
+        f'async def __ex(self): ' +
+        ''.join(f'\n {l}' for l in code.split('\n'))
+    )
+
+    # Get `__ex` from local variables, call it and return the result
+    return await locals()['__ex'](self)
+
+
 async def ev(self, chan, source, msg):
   msg = msg.split(' ')
-  exec(' '.join(msg))
+  await aexec(self, ' '.join(msg))
   await self.message(chan, 'ok')
 
 async def send(self, c, n, m):

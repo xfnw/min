@@ -55,7 +55,7 @@ async def genOut(self, noun):
 async def filter(self, c, n, m):
   if c in self.qtime and self.qtime[c] > time.time():
     return
-  if m[:5] == 'kim: ':
+  if m[:len(self.prefix)] == self.prefix:
     m = m[5:]
     await go(self, c, n, m)
   elif m[:4] == 'kim ':
