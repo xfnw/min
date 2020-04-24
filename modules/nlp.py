@@ -56,7 +56,7 @@ async def filter(self, c, n, m):
   if c in self.qtime and self.qtime[c] > time.time():
     return
   if m[:len(self.prefix)] == self.prefix:
-    m = m[5:]
+    m = m[len(self.prefix):]
     await go(self, c, n, m)
   elif m[:4] == 'kim ':
     m = m[4:]
