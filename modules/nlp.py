@@ -61,6 +61,9 @@ async def filter(self, c, n, m):
   elif m[:4] == 'kim ':
     m = m[4:]
     await go(self, c, n, m)
+  else:
+    if len(m.split(' ')) > 1:
+      await rec(self, m)
 
 async def go(self, c, n, m):
     await rec(self, m)
