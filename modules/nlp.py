@@ -63,7 +63,9 @@ async def filter(self, c, n, m):
     await go(self, c, n, m)
   else:
     if len(m.split(' ')) > 1:
-      await rec(self, m)
+      if self.learntime + self.learndelay > time.time():
+        await rec(self, m)
+        self.learntime = time.time()
 
 async def go(self, c, n, m):
     await rec(self, m)
@@ -77,6 +79,8 @@ async def init(self):
   
   self.qtime = {}
 
-  self.enmul = 1
+  self.learntime = 0
+  self.learndelay = 2
+  self.enmul = 25
   self.raw['nlp'] = filter
 
