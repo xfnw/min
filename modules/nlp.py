@@ -16,7 +16,7 @@ async def rec(self, m):
     if pre == '':
       beg.insert(dict(word=w))
     else:
-      prew.insert(dict(pre=pre, pro=w))
+      prew.insert_ignore(dict(pre=pre, pro=w),['id'])
     pre = w
     noch.insert(dict(word=w))
   end.insert(dict(word=pre))
