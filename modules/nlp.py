@@ -75,7 +75,6 @@ async def go(self, c, n, m):
     await self.message(c, ' '.join(await genOut(self, await getNoun(self, words))))
 
 async def init(self):
-  self.db = dataset.connect('sqlite:///database.db')
   
   self.qtime = {}
 
