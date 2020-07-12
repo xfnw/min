@@ -69,7 +69,7 @@ async def genOut(self, noun):
 
 
 async def filter(self, c, n, m):
-  if c in self.qtime and self.qtime[c] > time.time():
+  if self.t > time.time() or c in self.qtime and self.qtime[c] > time.time():
     return
   if m[:len(self.prefix)] == self.prefix:
     m = m[len(self.prefix):]

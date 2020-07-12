@@ -41,7 +41,7 @@ async def joins(self, chan, source, msg):
     self.t = time.time() + 2
     try:
         await self.join(i['name'])
-        await asyncio.sleep(0.5)
+        await asyncio.sleep(2)
         print('joined {}'.format(i['name']))
     except pydle.client.AlreadyInChannel:
         print('I am already in {}'.format(i['name']))
