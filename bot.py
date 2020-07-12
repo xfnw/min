@@ -48,7 +48,7 @@ class Oven(pydle.Client):
         
 
         if msg == '!botlist':
-            await self.message(chan, 'helo im kim, a learning chatbot https://xfnw.ttm.sh/git/kim/')
+            await self.message(chan, 'helo im kim, a learning chatbot https://tildegit.org/xfnw/kim/')
         await self.parseCommand(chan, source, msg)
       for i in self.raw:
         await self.raw[i](self, chan, source, msg)
