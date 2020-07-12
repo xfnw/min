@@ -21,12 +21,28 @@ async def rec(self, m):
     noch.insert(dict(word=w))
   end.insert(dict(word=pre))
   
-async def getNoun(self, words):
-  nouns = [i['word'] for i in self.db['noun'].find()]
-  out = {}
-  for i in words:
-    out[i] = nouns.count(i)
-  return min(out, key=out.get)
+async def getNoun(self, words, c):
+    if c in self.cstate:
+        oldnoun = self.cstate[c]
+    else:
+        oldnoun = None
+    nouns = [i['word'] for i in self.db['noun'].find()]
+    out = {}
+    for i in words:
+        out[i] = nouns.count(i)
+    noun = min(out, key=out.get)
+
+    conversation = self.db['conver']
+    if oldnoun != None:
+        print("adding", [oldnoun,noun])
+        conversation.insert_ignore(dict(pre=oldnoun,pro=noun),['id'])
+
+    nextnoun = [i['pro'] for i in conversation.find(pre=noun)]
+    print("nextnoun:",nextnoun)
+    if len(nextnoun) > 0:
+        noun = random.choice(nextnoun)
+    self.cstate[c] = noun
+    return noun
   
 async def genOut(self, noun):
   prew = self.db['prew']
@@ -72,7 +88,7 @@ async def go(self, c, n, m):
     words = m.split(' ')
     if words[0] == 'admin':
       return
-    await self.message(c, ' '.join(await genOut(self, await getNoun(self, words))))
+    await self.message(c, ' '.join(await genOut(self, await getNoun(self, words, c))))
 
 async def init(self):
   
@@ -83,3 +99,4 @@ async def init(self):
   self.enmul = 25
   self.raw['nlp'] = filter
 
+  self.cstate = {}
