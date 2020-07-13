@@ -79,7 +79,7 @@ async def filter(self, c, n, m):
     await go(self, c, n, m)
   else:
     if len(m.split(' ')) > 1:
-      if self.learntime + self.learndelay > time.time():
+      if self.learntime + self.learndelay < time.time():
         await rec(self, m)
         self.learntime = time.time()
 
