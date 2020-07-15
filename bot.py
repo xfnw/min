@@ -35,12 +35,15 @@ class Oven(pydle.Client):
       self.modules[i] = m
 
   async def on_invite(self, channel, by):
-    print('{} invited me to {}!'.format(by, channel))
-    self.t = time.time()+1
-    await self.join(channel)
+    modules['invite'].invite(self, channel, by)
+  #  print('{} invited me to {}!'.format(by, channel))
+  #  self.t = time.time()+1
+  #  await self.join(channel)
 
 
   async def on_message(self, chan, source, msg):
+    if chan == self.nickname:
+        chan = source
     if source != self.nickname:
 
 
