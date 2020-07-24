@@ -9,6 +9,12 @@ async def invite(self, channel, by):
         self.t = time.time()+1
         await self.join(channel)
     else:
+        if self.chandb.find_one(name=channel):
+            self.t = time.time()+1
+            await self.join(channel)
+            print('whee invited to {} by {}'.format(channel,by))
+            return
+            
         print('ive been invited but invites are disabled')
 
 

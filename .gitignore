@@ -2,4 +2,6 @@
 *.db
 *.pyc
 *.db-journal
+sizelog
+*journal
 
