@@ -88,10 +88,10 @@ class Oven(pydle.Client):
 
     return account in self.admins
 
-  async def on_private_message(self, trash, source, msg):
-    if source != self.nickname:
-      for i in self.raw:
-        await self.raw[i](self, source, source, msg)
+  #async def on_private_message(self, trash, source, msg):
+  #  if source != self.nickname:
+  #    for i in self.raw:
+  #      await self.raw[i](self, source, source, msg)
 
 
 if __name__ == "__main__":
