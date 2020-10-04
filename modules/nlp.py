@@ -97,6 +97,6 @@ async def init(self):
   self.learntime = 0
   self.learndelay = 4
   self.enmul = 25
-  self.raw['nlp'] = filter
+  self.rawm['nlp'] = filter
 
   self.cstate = {}

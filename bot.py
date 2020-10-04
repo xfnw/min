@@ -3,13 +3,13 @@
 
 import pydle, asyncio, dataset, sys, os, time
 
-class Oven(pydle.Client):
+class Kim(pydle.Client):
   async def on_connect(self):
     print('Connected!')
 
     self.modules = {}
     self.cmd = {}
-    self.raw = {}
+    self.rawm = {}
     self.help = {}
     self.db = dataset.connect('sqlite:///database.db')
     self.t=0
@@ -53,8 +53,8 @@ class Oven(pydle.Client):
         if msg == '!botlist':
             await self.message(chan, 'helo im kim, a learning chatbot https://tildegit.org/xfnw/kim/')
         await self.parseCommand(chan, source, msg)
-      for i in self.raw:
-        await self.raw[i](self, chan, source, msg)
+      for i in self.rawm:
+        await self.rawm[i](self, chan, source, msg)
 
   async def parseCommand(self, chan, source, msg):
     if msg[:len(self.prefix)] == self.prefix:
@@ -90,12 +90,12 @@ class Oven(pydle.Client):
 
   #async def on_private_message(self, trash, source, msg):
   #  if source != self.nickname:
-  #    for i in self.raw:
-  #      await self.raw[i](self, source, source, msg)
+  #    for i in self.rawm:
+  #      await self.rawm[i](self, source, source, msg)
 
 
 if __name__ == "__main__":
-  client = Oven('kim', realname='owens bot')
+  client = Kim('kim', realname='owens bot')
   client.admins = ['lickthecheese', 'ben', 'coffeeowl', 'gbmor', 'tomasino', 'ubergeek', 'deepend', 'calamitous', 'khuxkm']
   client.prefix = 'kim: '
   client.run('team.tilde.chat', tls=True, tls_verify=False)

@@ -13,7 +13,7 @@ async def reloadmods(self, chan, source, msg):
   await self.message(chan, '[\x036admin\x0f] reloading modules...')
   self.oldcmd = self.cmd
   self.cmd = {}
-  self.raw = {}
+  self.rawm = {}
   self.help = {}
   try:
     for i in self.modules:
