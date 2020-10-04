@@ -38,14 +38,14 @@ async def join(self, chan, source, msg):
 async def joins(self, chan, source, msg):
   await self.message(chan, '[\x036admin\x0f] I will drop commands for some seconds to ignore chanhistory...')
   for i in self.chandb.all():
-    self.t = time.time() + 2
+    self.t = time.time() + 5
     try:
         await self.join(i['name'])
-        await asyncio.sleep(2)
+        await asyncio.sleep(3)
         print('joined {}'.format(i['name']))
     except pydle.client.AlreadyInChannel:
         print('I am already in {}'.format(i['name']))
-  await asyncio.sleep(2)
+  await asyncio.sleep(3)
   await self.message(chan, '[\x036admin\x0f] Sucess!')
 
 async def aexec(self, code):
@@ -83,6 +83,22 @@ async def schans(self, c, n, m):
       self.chandb.insert(dict(name=i))
   await self.message(c, '[\x036admin\x0f] Ok')
 
+async def addalias(self,c,n,m):
+    al = m.split(' ')[0]
+    m = m[len(al)+1:] # dont use the list since i want trailing spaces
+    if al in self.cmd:
+        await self.message(c,'[\x036admin\x0f] no dont overwrite a command dummy')
+        return
+    self.cmd[al]=Alias(m).alias
+
+    await self.message(c,'[\x036admin\x0f] added "{}" alias for "{}"'.format(al,m))
+
+
+class Alias():
+    def __init__(self, ms):
+        self.ms = str(ms)
+    async def alias(alself,self,c,n,m):
+        asyncio.create_task(self.parseCommand(c,n,alself.ms.format(m)))
 
 
 
@@ -96,7 +112,8 @@ commands = {
   'send': send,
   'joins': joins,
   'shut': shut,
-  'schans': schans
+  'schans': schans,
+  'addalias': addalias
 }
 
 async def adminHandle(self, chan, source, msg):
