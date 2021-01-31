@@ -1,52 +1,52 @@
 
-import importlib, time, asyncio, pydle
+import importlib, time, asyncio, random
+from bot import *
+
+quitmessages = [
+        "time to die",
+        'you can hide, but you can not run!',
+        "you're next",
+        'bye',
+        'the balun has been popped.',
+        ]
+
 
 async def commit(self, chan, source, msg):
   await self.quit('{} told me to commit {}'.format(source,msg))
 
 async def quit(self, chan, source, msg):
-  await self.quit('{} told me to {}'.format(source,msg))
+  await self.send(build("QUIT",[random.choice(quitmessages)]))
 
 
 
 async def reloadmods(self, chan, source, msg):
   await self.message(chan, '[\x036admin\x0f] reloading modules...')
-  self.oldcmd = self.cmd
-  self.cmd = {}
-  self.rawm = {}
-  self.help = {}
+  shared.oldcmd = shared.commands
+  shared.commands = {}
+  shared.rawm = {}
+  shared.listeners = []
+  shared.help = {}
   try:
-    for i in self.modules:
-      importlib.reload(self.modules[i])
-      await self.modules[i].init(self)
+    for i in shared.modules:
+      importlib.reload(shared.modules[i])
+      await shared.modules[i].init(self)
       #await self.message(chan, '[\x036admin\x0f] load {} sucess!'.format(i))
-    await self.message(chan, '[\x036admin\x0f] done! {} modules reloaded!'.format(len(self.modules)))
+    await self.message(chan, '[\x036admin\x0f] done! {} modules reloaded!'.format(len(shared.modules)))
   except:
     await self.message(chan, '[\x036admin\x0f] reload failed... attempting to recover...')
-    self.cmd = self.oldcmd
+    shared.commands = shared.oldcmd
   
 
-async def part(self, chan, source, msg):
-  await self.message(chan, '[\x036admin\x0f] bye {}'.format(msg))
-  await self.part(msg)
-
-async def join(self, chan, source, msg):
-  self.t = time.time()+1
-  await self.message(chan, '[\x036admin\x0f] joined {}'.format(msg))
-  await self.join(msg)
+async def rawcmd(self, chan, source, msg):
+  await self.send_raw(msg)
 
 async def joins(self, chan, source, msg):
-  await self.message(chan, '[\x036admin\x0f] I will drop commands for some seconds to ignore chanhistory...')
+  await self.message(chan, '[\x036admin\x0f] joining slowly as to not flood...')
   for i in self.chandb.all():
-    self.t = time.time() + 5
-    try:
-        await self.join(i['name'])
-        await asyncio.sleep(3)
-        print('joined {}'.format(i['name']))
-    except pydle.client.AlreadyInChannel:
-        print('I am already in {}'.format(i['name']))
-  await asyncio.sleep(3)
-  await self.message(chan, '[\x036admin\x0f] Sucess!')
+    await self.send(build("JOIN",[i['name']]))
+    await asyncio.sleep(1)
+    print('joined {}'.format(i['name']))
+  await self.message(chan, '[\x036admin\x0f] Sucess! i may be laggy for a bit while i sort through all these channels...')
 
 async def aexec(self, code):
     # Make an async function with the code and `exec` it
@@ -74,7 +74,7 @@ async def send(self, c, n, m):
   await self.message(c, '[\x036admin\x0f] sent')
 
 async def shut(self, c, n, m):
-  self.qtime[c] = time.time()+(60*10)
+  shared.qtime[c] = time.time()+(60*10)
   await self.message(c, '[\x036admin\x0f] Ok, il be back in 10 minutes')
 
 async def schans(self, c, n, m):
@@ -94,11 +94,56 @@ async def addalias(self,c,n,m):
     await self.message(c,'[\x036admin\x0f] added "{}" alias for "{}"'.format(al,m))
 
 
+async def addot(self,c,n,m):
+    al = m.split(' ')[0]
+    m = m[len(al)+1:] # dont use the list since i want trailing spaces
+    if al in self.rawm:
+        await self.message(c,'[\x036admin\x0f] no dont overwrite a command dummy')
+        return
+    self.rawm[al]=Ot(m,al).ot
+
+    await self.message(c,'[\x036admin\x0f] added "{}" trigger for "{}"'.format(al,m))
+
+
+
+async def addtrigger(self,c,n,m):
+    al = m.split(' ')[0]
+    m = m[len(al)+1:] # dont use the list since i want trailing spaces
+    if al in self.rawm:
+        await self.message(c,'[\x036admin\x0f] no dont overwrite a command dummy')
+        return
+    self.rawm[al]=Trigger(m,al).trigger
+
+    await self.message(c,'[\x036admin\x0f] added "{}" trigger for "{}"'.format(al,m))
+
+
+
+class Ot():
+    def __init__(self, ms, al):
+        self.ms = str(ms)
+        self.al = str(al)
+    async def ot(alself,self,c,n,m):
+        if alself.al in m and n != self.nickname:
+            asyncio.create_task(self.on_message(c,n,alself.ms.format(m)))
+            self.rawm.pop(alself.al)
+
+
+
+
+class Trigger():
+    def __init__(self, ms, al):
+        self.ms = str(ms)
+        self.al = str(al)
+    async def trigger(alself,self,c,n,m):
+        if alself.al in m:
+            asyncio.create_task(self.on_message(c,n,alself.ms.format(m)))
+
+
 class Alias():
     def __init__(self, ms):
         self.ms = str(ms)
     async def alias(alself,self,c,n,m):
-        asyncio.create_task(self.parseCommand(c,n,alself.ms.format(m)))
+        asyncio.create_task(self.on_message(c,n,alself.ms.format(m)))
 
 
 
@@ -106,30 +151,33 @@ commands = {
   'quit': quit,
   'reload': reloadmods,
   'commit': commit,
-  'part': part,
-  'join': join,
+  'raw': rawcmd,
   'eval': ev,
   'send': send,
   'joins': joins,
   'shut': shut,
   'schans': schans,
-  'addalias': addalias
+  'addalias': addalias,
+  'addtrigger': addtrigger,
+  'addot': addot,
 }
 
+@command('admin')
+@is_admin
 async def adminHandle(self, chan, source, msg):
-  if await self.is_admin(source):
     msg = msg.split(' ')
     if len(msg) < 1 or not msg[0] in commands:
       await self.message(chan, '[\x036admin\x0f] Invalid command')
       return
     print('[ADMIN MODULE] {} told me to {}!!!'.format(source,msg[0]))
-    await commands[msg.pop(0)](self, chan, source, ' '.join(msg))
-  else:
-    await self.message(chan, '[\x036admin\x0f] You do not have permission to do this')
+    asyncio.create_task(commands[msg.pop(0)](self, chan, source, ' '.join(msg)))
 
 
 async def init(self):
-  self.chandb = self.db['chan']
+  self.chandb = shared.db['chan']
+
+  self.admins = ['lickthecheese']
+  return
   self.cmd['admin'] = adminHandle
   
   self.help['admin'] = ['admin - various bot owner commands (more for subcommands)', 'sub-commands of admin, for more info do help admin <command>: quit reload commit part join joins eval send']

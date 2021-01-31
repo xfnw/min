@@ -1,13 +1,14 @@
+from bot import *
 
 import dataset
 import random
 import time
 
 async def rec(self, m):
-  prew = self.db['prew']
-  noch = self.db['noun']
-  beg = self.db['beg']
-  end = self.db['end']
+  prew = shared.db['prew']
+  noch = shared.db['noun']
+  beg = shared.db['beg']
+  end = shared.db['end']
   pre = ''
   words = m.split(' ')
   if words[0] == 'admin':
@@ -22,20 +23,20 @@ async def rec(self, m):
   end.insert(dict(word=pre))
   
 async def getNoun(self, words, c):
-    if c in self.cstate:
-        oldnoun = self.cstate[c]
+    if c in shared.cstate:
+        oldnoun = shared.cstate[c]
     else:
         oldnoun = None
 
-    self.db['remsg'].insert_ignore(dict(noun=oldnoun,msg=' '.join(words)),['id'])
+    shared.db['remsg'].insert_ignore(dict(noun=oldnoun,msg=' '.join(words)),['id'])
 
-    nouns = [i['word'] for i in self.db['noun'].find()]
+    nouns = [i['word'] for i in shared.db['noun'].find()]
     out = {}
     for i in words:
         out[i] = nouns.count(i)
     noun = min(out, key=out.get)
 
-    conversation = self.db['conver']
+    conversation = shared.db['conver']
     if oldnoun != None:
         print("adding", [oldnoun,noun])
         conversation.insert_ignore(dict(pre=oldnoun,pro=noun),['id'])
@@ -44,27 +45,27 @@ async def getNoun(self, words, c):
     print("nextnoun:",nextnoun)
     if len(nextnoun) > 0:
         noun = random.choice(nextnoun)
-    self.cstate[c] = noun
+    shared.cstate[c] = noun
     return noun
   
 async def genOut(self, noun):
-  oldresponses = [i['msg'] for i in self.db['remsg'].find(noun=noun)]
+  oldresponses = [i['msg'] for i in shared.db['remsg'].find(noun=noun)]
   if len(oldresponses) > 0:
     return random.choice(oldresponses).split(' ')
-  prew = self.db['prew']
-  beg = [ i['word'] for i in self.db['beg'].find() ]
-  end = [ i['word'] for i in self.db['end'].find() ]
-  nouns = [i['word'] for i in self.db['noun'].find()]
+  prew = shared.db['prew']
+  beg = [ i['word'] for i in shared.db['beg'].find() ]
+  end = [ i['word'] for i in shared.db['end'].find() ]
+  nouns = [i['word'] for i in shared.db['noun'].find()]
   iter=0
   out = [noun]
-  while (out[0] not in beg or nouns.count(out[0])-1 > iter * self.enmul) and iter < 7:
+  while (out[0] not in beg or nouns.count(out[0])-1 > iter * shared.enmul) and iter < 7:
     try:
       out = [ random.choice(list(prew.find(pro=out[0])))['pre'] ] + out
     except IndexError:
       iter += 69
     iter += 1
   iter = 0
-  while (out[-1] not in end or nouns.count(out[-1])-1 > iter * self.enmul) and iter < 7:
+  while (out[-1] not in end or nouns.count(out[-1])-1 > iter * shared.enmul) and iter < 7:
     
     try:
       out.append(random.choice(list(prew.find(pre=out[-1])))['pro'])
@@ -75,19 +76,19 @@ async def genOut(self, noun):
 
 
 async def filter(self, c, n, m):
-  if self.t > time.time() or c in self.qtime and self.qtime[c] > time.time():
+  if c in shared.qtime and shared.qtime[c] > time.time():
     return
-  if m[:len(self.prefix)] == self.prefix:
-    m = m[len(self.prefix):]
+  if m[:len(shared.prefix)] == shared.prefix:
+    m = m[len(shared.prefix):]
     await go(self, c, n, m)
   elif m[:4] == 'kim ':
     m = m[4:]
     await go(self, c, n, m)
   else:
     if len(m.split(' ')) > 1:
-      if self.learntime + self.learndelay < time.time():
+      if shared.learntime + shared.learndelay < time.time():
         await rec(self, m)
-        self.learntime = time.time()
+        shared.learntime = time.time()
 
 async def go(self, c, n, m):
     await rec(self, m)
@@ -98,11 +99,11 @@ async def go(self, c, n, m):
 
 async def init(self):
   
-  self.qtime = {}
+  shared.qtime = {}
 
-  self.learntime = 0
-  self.learndelay = 4
-  self.enmul = 40
-  self.rawm['nlp'] = filter
+  shared.learntime = 0
+  shared.learndelay = 4
+  shared.enmul = 40
+  shared.rawm['nlp'] = filter
 
-  self.cstate = {}
+  shared.cstate = {}
