@@ -26,6 +26,9 @@ async def getNoun(self, words, c):
         oldnoun = self.cstate[c]
     else:
         oldnoun = None
+
+    self.db['remsg'].insert_ignore(dict(noun=oldnoun,msg=' '.join(words)),['id'])
+
     nouns = [i['word'] for i in self.db['noun'].find()]
     out = {}
     for i in words:
@@ -45,6 +48,9 @@ async def getNoun(self, words, c):
     return noun
   
 async def genOut(self, noun):
+  oldresponses = [i['msg'] for i in self.db['remsg'].find(noun=noun)]
+  if len(oldresponses) > 0:
+    return random.choice(oldresponses).split(' ')
   prew = self.db['prew']
   beg = [ i['word'] for i in self.db['beg'].find() ]
   end = [ i['word'] for i in self.db['end'].find() ]
@@ -96,7 +102,7 @@ async def init(self):
 
   self.learntime = 0
   self.learndelay = 4
-  self.enmul = 25
+  self.enmul = 40
   self.rawm['nlp'] = filter
 
   self.cstate = {}
