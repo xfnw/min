@@ -11,6 +11,5 @@ async def testy(self,channel,nick,msg):
 
 async def init(self):
 
-    await self.send_raw("join #bots")
     
 
