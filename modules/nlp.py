@@ -81,7 +81,7 @@ async def filter(self, c, n, m):
   if m[:len(shared.prefix)] == shared.prefix:
     m = m[len(shared.prefix):]
     await go(self, c, n, m)
-  elif m[:4] == 'kim ':
+  elif m[:4] == 'min ':
     m = m[4:]
     await go(self, c, n, m)
   else:

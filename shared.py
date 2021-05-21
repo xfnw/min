@@ -1,7 +1,7 @@
 
 import dataset
 
-prefix = 'kim: '
+prefix = 'min: '
 modules = {}
 listeners = []
 commands = {}

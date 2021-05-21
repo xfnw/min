@@ -1,4 +1,4 @@
-# Kim
+# min
 A bot that uses weighted topic identifiers, and markov to make intresting and amusing conversations.
 
 Based on the the idea of [RealAI](https://github.com/oblivionburn/RealAI), however it does not use any

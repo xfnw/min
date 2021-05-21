@@ -176,7 +176,7 @@ async def adminHandle(self, chan, source, msg):
 async def init(self):
   self.chandb = shared.db['chan']
 
-  self.admins = ['lickthecheese']
+  self.admins = ['xfnw']
   return
   self.cmd['admin'] = adminHandle
   

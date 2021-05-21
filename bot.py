@@ -120,13 +120,13 @@ async def main():
 
     sasl_params = SASLUserPass(username, password)
     params      = ConnectionParams(
-        "kim",
-        host = "irc.tilde.chat",
+        "min",
+        host = "irc.libera.chat",
         port = 6697,
         tls  = True,
         sasl = sasl_params)
 
-    await bot.add_server("tilde", params)
+    await bot.add_server("libera", params)
     await bot.run()
 
 if __name__ == "__main__":
