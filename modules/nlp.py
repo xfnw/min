@@ -81,8 +81,8 @@ async def filter(self, c, n, m):
   if m[:len(shared.prefix)] == shared.prefix:
     m = m[len(shared.prefix):]
     await go(self, c, n, m)
-  elif m[:4] == 'min ':
-    m = m[4:]
+  elif m[:len(self.nickname)+1] == self.nickname+' ':
+    m = m[len(self.nickname)+1:]
     await go(self, c, n, m)
   elif '#' not in c and n != self.nickname:
     await go(self, c, n, m)
@@ -104,7 +104,7 @@ async def init(self):
   shared.qtime = {}
 
   shared.learntime = 0
-  shared.learndelay = 4
+  shared.learndelay = 1
   shared.enmul = 40
   shared.rawm['nlp'] = filter
 
