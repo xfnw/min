@@ -7,7 +7,7 @@ from ircrobots import Bot as BaseBot
 from ircrobots import Server as BaseServer
 from ircrobots import ConnectionParams, SASLUserPass, SASLSCRAM
 
-from auth import username, password
+from auth import username, password, channel
 import shared
 
 def is_admin(func):
@@ -49,14 +49,14 @@ async def message(self,modname,channel,msg):
 
 class Server(BaseServer):
     async def line_read(self, line: Line):
-        print(f"{self.name} < {line.format()}")
         if 'on_'+line.command.lower() in dir(self):
             asyncio.create_task(self.__getattribute__('on_'+line.command.lower())(line))
         for listener in shared.listeners:
             if listener[0] == line.command:
                 asyncio.create_task(listener[1](self,line))
-    
-    async def line_send(self, line: Line):
+    def line_preread(self, line: Line):
+        print(f"{self.name} < {line.format()}")
+    def line_presend(self, line: Line):
         print(f"{self.name} > {line.format()}")
 
 
@@ -124,9 +124,19 @@ async def main():
         host = "irc.libera.chat",
         port = 6697,
         tls  = True,
-        sasl = sasl_params)
+        sasl = sasl_params,
+        autojoin = channel)
 
     await bot.add_server("libera", params)
+    
+    params      = ConnectionParams(
+        "min",
+        host = "einstein.sturtz.cf",
+        port = 6667,
+        tls  = False,
+        autojoin = ['#sturtz_network'])
+
+    await bot.add_server("sturtz", params)
     await bot.run()
 
 if __name__ == "__main__":

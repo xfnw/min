@@ -10,6 +10,5 @@ async def testy(self,channel,nick,msg):
 
 
 async def init(self):
-
-    
+   pass
 

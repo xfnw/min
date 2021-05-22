@@ -84,6 +84,8 @@ async def filter(self, c, n, m):
   elif m[:4] == 'min ':
     m = m[4:]
     await go(self, c, n, m)
+  elif '#' not in c and n != self.nickname:
+    await go(self, c, n, m)
   else:
     if len(m.split(' ')) > 1:
       if shared.learntime + shared.learndelay < time.time():
