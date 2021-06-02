@@ -102,10 +102,16 @@ async def go(self, c, n, m):
 async def init(self):
   
   shared.qtime = {}
-
   shared.learntime = 0
-  shared.learndelay = 1
-  shared.enmul = 40
-  shared.rawm['nlp'] = filter
 
+  # delay between grabbing random messages and passively
+  # learning.
+  shared.learndelay = 1
+  # sentance ending weight, lower means longer sentances,
+  # higher means shorter sentances. this will need to slowly
+  # get larger as the database grows
+  shared.enmul = 6
+  
+
+  shared.rawm['nlp'] = filter
   shared.cstate = {}

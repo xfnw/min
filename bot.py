@@ -131,7 +131,7 @@ async def main():
     
     params      = ConnectionParams(
         "min",
-        host = "einstein.sturtz.cf",
+        host = "irc.sturtz.cf",
         port = 6667,
         tls  = False,
         autojoin = ['#sturtz_network'])
