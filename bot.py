@@ -85,6 +85,8 @@ class Server(BaseServer):
         nick = line.source.split('!')[0]
         msg = line.params[1]
 
+        if nick == self.nickname:
+            return
         if channel == self.nickname:
             channel = nick
 
