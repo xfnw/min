@@ -131,12 +131,12 @@ async def main():
     
     params      = ConnectionParams(
         "min",
-        host = "irc.sturtz.cf",
-        port = 6667,
-        tls  = False,
-        autojoin = ['#sturtz_network'])
+        host = "manonet.lumey.dev",
+        port = 6697,
+        tls  = True,
+        autojoin = ['#manonet'])
 
-    await bot.add_server("sturtz", params)
+    await bot.add_server("manonet", params)
     await bot.run()
 
 if __name__ == "__main__":
