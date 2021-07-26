@@ -95,7 +95,7 @@ async def go(self, c, n, m):
     words = re.sub(r'([\.,\?!])', r' \1', m).split()
     if words[0] == 'admin':
       return
-    await self.message(c, ' '.join(await genOut(self, await getNoun(self, words, c))))
+    await self.message(c, re.sub(r' ([\.,\?!])', r'\1', ' '.join(await genOut(self, await getNoun(self, words, c)))))
 
 async def init(self):
   
