@@ -1,8 +1,6 @@
 from bot import *
 
-import dataset
-import random
-import time
+import dataset, random, time, re
 
 async def rec(self, m):
   prew = shared.db['prew']
@@ -94,7 +92,7 @@ async def filter(self, c, n, m):
 
 async def go(self, c, n, m):
     await rec(self, m)
-    words = m.split(' ')
+    words = re.sub(r'([\.,\?!])', r' \1', m).split()
     if words[0] == 'admin':
       return
     await self.message(c, ' '.join(await genOut(self, await getNoun(self, words, c))))
@@ -110,7 +108,7 @@ async def init(self):
   # sentance ending weight, lower means longer sentances,
   # higher means shorter sentances. this will need to slowly
   # get larger as the database grows
-  shared.enmul = 7
+  shared.enmul = 6
   
 
   shared.rawm['nlp'] = filter
