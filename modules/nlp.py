@@ -95,7 +95,10 @@ async def go(self, c, n, m):
     words = re.sub(r'([\.,\?!])', r' \1', m).split()
     if words[0] == 'admin':
       return
-    await self.message(c, re.sub(r' ([\.,\?!])', r'\1', ' '.join(await genOut(self, await getNoun(self, words, c)))))
+    msg = re.sub(r' ([\.,\?!])', r'\1', ' '.join(await genOut(self, await getNoun(self, words, c))))
+    if msg[-1] == "\x01" and msg[0] != "\x01":
+        msg = msg[:-1]
+    await self.message(c, msg)
 
 async def init(self):
   
@@ -108,7 +111,7 @@ async def init(self):
   # sentance ending weight, lower means longer sentances,
   # higher means shorter sentances. this will need to slowly
   # get larger as the database grows
-  shared.enmul = 6
+  shared.enmul = 10
   
 
   shared.rawm['nlp'] = filter
