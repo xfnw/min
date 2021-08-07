@@ -55,6 +55,7 @@ async def genOut(self, noun):
   end = [ i['word'] for i in shared.db['end'].find() ]
   nouns = [i['word'] for i in shared.db['noun'].find()]
   iter=0
+  coun=0
   out = [noun]
   while (out[0] not in beg or nouns.count(out[0])-1 > iter * shared.enmul) and iter < 7:
     try:
@@ -62,6 +63,7 @@ async def genOut(self, noun):
     except IndexError:
       iter += 69
     iter += 1
+    coun += 1
   iter = 0
   while (out[-1] not in end or nouns.count(out[-1])-1 > iter * shared.enmul) and iter < 7:
     
@@ -70,6 +72,9 @@ async def genOut(self, noun):
     except IndexError:
       iter += 69
     iter += 1
+    coun += 1
+  if coun >= 14:
+    shared.enmul += 1
   return out
 
 
