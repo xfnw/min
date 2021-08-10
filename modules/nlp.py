@@ -73,8 +73,12 @@ async def genOut(self, noun):
       iter += 69
     iter += 1
     coun += 1
-  if coun >= 14:
+
+  if coun <= 3:
+    shared.enmul -= 1
+  elif coun >= 14:
     shared.enmul += 1
+
   return out
 
 
@@ -116,7 +120,7 @@ async def init(self):
   # sentance ending weight, lower means longer sentances,
   # higher means shorter sentances. this will need to slowly
   # get larger as the database grows
-  shared.enmul = 10
+  shared.enmul = 9
   
 
   shared.rawm['nlp'] = filter
