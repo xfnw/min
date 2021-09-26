@@ -28,10 +28,10 @@ async def getNoun(self, words, c):
 
     shared.db['remsg'].insert_ignore(dict(noun=oldnoun,msg=' '.join(words)),['id'])
 
-    nouns = [i['word'] for i in shared.db['noun'].find()]
+    nouns = shared.db['noun']
     out = {}
     for i in words:
-        out[i] = nouns.count(i)
+        out[i] = nouns.count(word=i)
     noun = min(out, key=out.get)
 
     conversation = shared.db['conver']
@@ -51,13 +51,13 @@ async def genOut(self, noun):
   if len(oldresponses) > 0:
     return random.choice(oldresponses).split(' ')
   prew = shared.db['prew']
-  beg = [ i['word'] for i in shared.db['beg'].find() ]
-  end = [ i['word'] for i in shared.db['end'].find() ]
-  nouns = [i['word'] for i in shared.db['noun'].find()]
+  beg = shared.db['beg']
+  end = shared.db['end']
+  nouns = shared.db['noun']
   iter=0
   coun=0
   out = [noun]
-  while (out[0] not in beg or nouns.count(out[0])-1 > iter * shared.enmul) and iter < 7:
+  while (beg.find_one(word=out[0]) is None or nouns.count(word=out[0])-1 > iter * shared.enmul) and iter < 7:
     try:
       out = [ random.choice(list(prew.find(pro=out[0])))['pre'] ] + out
     except IndexError:
@@ -65,7 +65,7 @@ async def genOut(self, noun):
     iter += 1
     coun += 1
   iter = 0
-  while (out[-1] not in end or nouns.count(out[-1])-1 > iter * shared.enmul) and iter < 7:
+  while (end.find_one(word=out[-1]) is None or nouns.count(word=out[-1])-1 > iter * shared.enmul) and iter < 7:
     
     try:
       out.append(random.choice(list(prew.find(pre=out[-1])))['pro'])
