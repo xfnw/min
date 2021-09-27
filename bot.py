@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import asyncio, os, importlib
+import asyncio, os, importlib, inspect
 
 from irctokens import build, Line
 from ircrobots import Bot as BaseBot
@@ -41,7 +41,8 @@ def rawm(rname):
 
 
 
-async def message(self,modname,channel,msg):
+async def message(self,channel,msg):
+    modname = os.path.splittext(os.path.basename(inspect.stack()[1].filename))[0]
     await self.send(build("PRIVMSG",[channel,f'[\x036{modname}\x0f] {msg}']))
 
 
