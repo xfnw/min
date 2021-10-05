@@ -66,7 +66,6 @@ async def genOut(self, noun):
     coun += 1
   iter = 0
   while (end.find_one(word=out[-1]) is None or nouns.count(word=out[-1])-1 > iter * shared.enmul) and iter < 7:
-    
     try:
       out.append(random.choice(list(prew.find(pre=out[-1])))['pro'])
     except IndexError:
