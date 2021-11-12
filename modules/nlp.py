@@ -57,25 +57,37 @@ async def genOut(self, noun):
   iter=0
   coun=0
   out = [noun]
-  while (beg.find_one(word=out[0]) is None or nouns.count(word=out[0])-1 > iter * shared.enmul) and iter < 7:
+  while (beg.find_one(word=out[0]) is None or nouns.count(word=out[0])-1 > iter * shared.enmul) and iter < shared.maxiter:
     try:
-      out = [ random.choice(list(prew.find(pro=out[0])))['pre'] ] + out
+      out = [ random.choice(list(prew.find(pro=out[0],pro2=out[1],pro3=out[2])))['pre'] ] + out
     except IndexError:
-      iter += 69
+      try:
+        out = [ random.choice(list(prew.find(pro=out[0],pro2=out[1])))['pre'] ] + out
+      except IndexError:
+        try:
+          out = [ random.choice(list(prew.find(pro=out[0])))['pre'] ] + out
+        except IndexError:
+          iter += 69
     iter += 1
     coun += 1
   iter = 0
-  while (end.find_one(word=out[-1]) is None or nouns.count(word=out[-1])-1 > iter * shared.enmul) and iter < 7:
+  while (end.find_one(word=out[-1]) is None or nouns.count(word=out[-1])-1 > iter * shared.enmul) and iter < shared.maxiter:
     try:
-      out.append(random.choice(list(prew.find(pre=out[-1])))['pro'])
+      out.append(random.choice(list(prew.find(pre3=out[-3],pre2=out[-2],pre=out[-1])))['pro'])
     except IndexError:
-      iter += 69
+      try:
+        out.append(random.choice(list(prew.find(pre2=out[-2],pre=out[-1])))['pro'])
+      except IndexError:
+        try:
+          out.append(random.choice(list(prew.find(pre=out[-1])))['pro'])
+        except IndexError:
+          iter += 69
     iter += 1
     coun += 1
 
   if coun <= 3:
     shared.enmul -= 1
-  elif coun >= 14:
+  elif coun >= shared.maxiter:
     shared.enmul += 1
 
   return out
@@ -120,7 +132,7 @@ async def init(self):
   # higher means shorter sentances. this will need to slowly
   # get larger as the database grows
   shared.enmul = 9
-  
+  shared.maxiter = 14
 
   shared.rawm['nlp'] = filter
   shared.cstate = {}
