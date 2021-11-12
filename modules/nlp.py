@@ -36,8 +36,6 @@ async def getNoun(self, words, c):
     else:
         oldnoun = None
 
-    shared.db['remsg'].insert_ignore(dict(noun=oldnoun,msg=' '.join(words)),['id'])
-
     nouns = shared.db['noun']
     out = {}
     for i in words:
@@ -57,9 +55,6 @@ async def getNoun(self, words, c):
     return noun
   
 async def genOut(self, noun):
-  oldresponses = [i['msg'] for i in shared.db['remsg'].find(noun=noun)]
-  if len(oldresponses) > 0:
-    return random.choice(oldresponses).split(' ')
   prew = shared.db['prew']
   beg = shared.db['beg']
   end = shared.db['end']
