@@ -97,22 +97,31 @@ async def addalias(self,c,n,m):
 async def addot(self,c,n,m):
     al = m.split(' ')[0]
     m = m[len(al)+1:] # dont use the list since i want trailing spaces
-    if al in self.rawm:
+    if al in shared.rawm:
         await self.message(c,'[\x036admin\x0f] no dont overwrite a command dummy')
         return
-    self.rawm[al]=Ot(m,al).ot
+    shared.rawm[al]=Ot(m,al).ot
 
     await self.message(c,'[\x036admin\x0f] added "{}" trigger for "{}"'.format(al,m))
 
 
+async def addspook(self,c,n,m):
+    al = m.split(' ')[0]
+    m = m[len(al)+1:] # dont use the list since i want trailing spaces
+    if al in shared.rawm:
+        await self.message(c,'[\x036admin\x0f] no dont overwrite a command dummy')
+        return
+    shared.rawm[al]=Spook(m,al).spook
+
+    await self.message(c,'[\x036admin\x0f] added "{}" trigger for "{}"'.format(al,m))
 
 async def addtrigger(self,c,n,m):
     al = m.split(' ')[0]
     m = m[len(al)+1:] # dont use the list since i want trailing spaces
-    if al in self.rawm:
+    if al in shared.rawm:
         await self.message(c,'[\x036admin\x0f] no dont overwrite a command dummy')
         return
-    self.rawm[al]=Trigger(m,al).trigger
+    shared.rawm[al]=Trigger(m,al).trigger
 
     await self.message(c,'[\x036admin\x0f] added "{}" trigger for "{}"'.format(al,m))
 
@@ -124,10 +133,18 @@ class Ot():
         self.al = str(al)
     async def ot(alself,self,c,n,m):
         if alself.al in m and n != self.nickname:
-            asyncio.create_task(self.on_message(c,n,alself.ms.format(m)))
-            self.rawm.pop(alself.al)
+            asyncio.create_task(self.on_privmsg(build("PRIVMSG",[c,alself.ms.format(m)],n+'!spoof@spoof')))
+            shared.rawm.pop(alself.al)
 
 
+class Spook():
+    def __init__(self, ms, al):
+        self.ms = str(ms)
+        self.al = str(al)
+    async def spook(alself,self,c,n,m):
+        if alself.al in m and n != self.nickname:
+            asyncio.create_task(self.message(c,alself.ms.format(m)))
+            shared.rawm.pop(alself.al)
 
 
 class Trigger():
@@ -136,14 +153,14 @@ class Trigger():
         self.al = str(al)
     async def trigger(alself,self,c,n,m):
         if alself.al in m:
-            asyncio.create_task(self.on_message(c,n,alself.ms.format(m)))
+            asyncio.create_task(self.on_privmsg(build("PRIVMSG",[c,alself.ms.format(m)],n+'!spoof@spoof')))
 
 
 class Alias():
     def __init__(self, ms):
         self.ms = str(ms)
     async def alias(alself,self,c,n,m):
-        asyncio.create_task(self.on_message(c,n,alself.ms.format(m)))
+        asyncio.create_task(self.on_privmsg(build("PRIVMSG",[c,alself.ms.format(m)],n+'!spoof@spoof')))
 
 
 
@@ -160,6 +177,7 @@ commands = {
   'addalias': addalias,
   'addtrigger': addtrigger,
   'addot': addot,
+  'addspook': addspook,
 }
 
 @command('admin')
