@@ -17,7 +17,7 @@ async def rec(self, m):
   beg = shared.db['beg']
   end = shared.db['end']
 
-  words = m.split(' ')
+  words = m.split()
 
   if words[0] == 'admin' or len(words) < 2:
     return
@@ -110,7 +110,7 @@ async def filter(self, c, n, m):
   elif '#' not in c and n != self.nickname:
     await go(self, c, n, m)
   else:
-    if len(m.split(' ')) > 1:
+    if len(m.split()) > 1:
       if shared.learntime + shared.learndelay < time.time():
         await rec(self, m)
         shared.learntime = time.time()
