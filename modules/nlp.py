@@ -2,24 +2,34 @@ from bot import *
 
 import dataset, random, time, re
 
+def get(l,i):
+  try:
+    if i <= len(l) and i >= 0:
+      return l[i]
+    else:
+      return ''
+  except IndexError:
+    return ''
+
 async def rec(self, m):
   prew = shared.db['prew']
   noch = shared.db['noun']
   beg = shared.db['beg']
   end = shared.db['end']
-  pre = ''
+
   words = m.split(' ')
-  if words[0] == 'admin':
+
+  if words[0] == 'admin' or len(words) < 2:
     return
-  for w in words:
-    if pre == '':
-      beg.insert(dict(word=w))
-    else:
-      prew.insert_ignore(dict(pre=pre, pro=w),['id'])
-    pre = w
+
+  beg.insert(dict(word=words[0]))
+  end.insert(dict(word=words[-1]))
+
+  for w in range(len(words)):
+    if w > 0:
+      prew.insert_ignore(dict(pre3=get(words,w-3), pre2=get(words,w-2), pre=get(words,w-1), pro=get(words,w), pro2=get(words,w+1), pro3=get(words,w+2)),['id'])
     noch.insert(dict(word=w))
-  end.insert(dict(word=pre))
-  
+
 async def getNoun(self, words, c):
     if c in shared.cstate:
         oldnoun = shared.cstate[c]
