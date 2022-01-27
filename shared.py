@@ -1,12 +1,10 @@
-
 import dataset
 
-prefix = 'min: '
+prefix = "min: "
 modules = {}
 listeners = []
 commands = {}
 rawm = {}
-db = dataset.connect('sqlite:///database.db')
+db = dataset.connect("sqlite:///database.db")
 
 qtime = {}
-
