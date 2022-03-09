@@ -78,7 +78,7 @@ async def genOut(self, noun):
     out = [noun]
     while (
         beg.find_one(word=out[0]) is None
-        or nouns.count(word=out[0]) - 1 > iter * shared.enmul
+        or beg.count(word=out[0]) - 1 > iter * shared.enmul
     ) and iter < shared.maxiter:
         try:
             out = [
@@ -101,7 +101,7 @@ async def genOut(self, noun):
     iter = 0
     while (
         end.find_one(word=out[-1]) is None
-        or nouns.count(word=out[-1]) - 1 > iter * shared.enmul
+        or end.count(word=out[-1]) - 1 > iter * shared.enmul
     ) and iter < shared.maxiter:
         try:
             out.append(
