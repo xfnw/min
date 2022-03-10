@@ -19,7 +19,7 @@ async def rec(self, m):
     beg = shared.db["beg"]
     end = shared.db["end"]
 
-    words = m.split()
+    words = re.sub(r"([\.,\?!])", r" \1", m).split()
 
     if words[0] == "admin" or len(words) < 2:
         return
