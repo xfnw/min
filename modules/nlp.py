@@ -78,7 +78,7 @@ async def genOut(self, noun):
     out = [noun]
     while (
         beg.find_one(word=out[0]) is None
-        or beg.count(word=out[0]) - 1 > iter * shared.enmul
+        or beg.count(word=out[0]) - 1 < shared.enmul / (1 + iter / shared.maxiter)
     ) and iter < shared.maxiter:
         try:
             out = [
@@ -95,13 +95,13 @@ async def genOut(self, noun):
                 try:
                     out = [random.choice(list(prew.find(pro=out[0])))["pre"]] + out
                 except IndexError:
-                    iter += 69
+                    iter += 69420
         iter += 1
         coun += 1
     iter = 0
     while (
         end.find_one(word=out[-1]) is None
-        or end.count(word=out[-1]) - 1 > iter * shared.enmul
+        or end.count(word=out[-1]) - 1 < shared.enmul / (1 + iter / shared.maxiter)
     ) and iter < shared.maxiter:
         try:
             out.append(
@@ -118,14 +118,14 @@ async def genOut(self, noun):
                 try:
                     out.append(random.choice(list(prew.find(pre=out[-1])))["pro"])
                 except IndexError:
-                    iter += 69
+                    iter += 69420
         iter += 1
         coun += 1
 
     if coun <= 4:
-        shared.enmul -= 0.1
+        shared.enmul += 1
     elif coun >= shared.maxiter:
-        shared.enmul += 0.1
+        shared.enmul -= 1
 
     return out
 
@@ -174,7 +174,7 @@ async def init(self):
     # sentance ending weight, lower means longer sentances,
     # higher means shorter sentances. this will need to slowly
     # get larger as the database grows
-    shared.enmul = 2
+    shared.enmul = 350
     shared.maxiter = 14
 
     shared.rawm["nlp"] = filter
