@@ -171,10 +171,10 @@ async def init(self):
     # delay between grabbing random messages and passively
     # learning.
     shared.learndelay = 1
-    # sentance ending weight, lower means longer sentances,
+    # sentance ending weight, higher means longer sentances,
     # higher means shorter sentances. this will need to slowly
     # get larger as the database grows
-    shared.enmul = 350
+    shared.enmul = 200
     shared.maxiter = 14
 
     shared.rawm["nlp"] = filter
