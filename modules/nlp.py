@@ -160,7 +160,7 @@ async def go(self, c, n, m):
     )
     if msg[-1] == "\x01" and msg[0] != "\x01":
         msg = msg[:-1]
-    await self.message(c, msg)
+    await self.send(build("PRIVMSG", [c, msg]))
 
 
 async def init(self):
