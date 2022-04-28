@@ -7,7 +7,7 @@ from ircrobots import Bot as BaseBot
 from ircrobots import Server as BaseServer
 from ircrobots import ConnectionParams, SASLUserPass, SASLSCRAM
 
-from auth import username, password
+from auth import username, password, channel
 import shared
 
 
