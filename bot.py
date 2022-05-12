@@ -103,7 +103,7 @@ class Server(BaseServer):
         await self.handle_command(channel, nick, msg)
 
     async def handle_rawm(self, channel, nick, msg):
-        for i in shared.rawm:
+        for i in list(shared.rawm):
             await shared.rawm[i](self, channel, nick, msg)
 
     async def handle_command(self, channel, nick, msg):
