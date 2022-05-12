@@ -153,8 +153,8 @@ class Ot:
     def __init__(self, al, ms):
         self.ms = str(ms)
         self.al = str(al)
-        self.__class__.ots[al] = ms
-        shared.rawm[al] = self.ot
+        self.__class__.ots[self.al] = ms
+        shared.rawm[self.al] = self.ot
 
     async def ot(alself, self, c, n, m):
         if alself.al in m and n != self.nickname:
@@ -173,12 +173,12 @@ class Spook:
     def __init__(self, al, ms):
         self.ms = str(ms)
         self.al = str(al)
-        self.__class__.spooks[al] = ms
-        shared.rawm[al] = self.spook
+        self.__class__.spooks[self.al] = ms
+        shared.rawm[self.al] = self.spook
 
     async def spook(alself, self, c, n, m):
         if alself.al in m and n != self.nickname:
-            asyncio.create_task(self.send(build("PRIVMSG", [c, alself.ms.format(m)])))
+            self.send(build("PRIVMSG", [c, alself.ms.format(m)]))
             shared.rawm.pop(alself.al)
 
 
