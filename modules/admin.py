@@ -90,6 +90,21 @@ async def shut(self, c, n, m):
     await self.message(c, "Ok, il be back in 10 minutes")
 
 
+async def deleteword(self, c, n, m):
+    starttime = time.time()
+    deleteme = m.split()
+    shared.db["conver"].delete(pre=deleteme)
+    shared.db["prew"].delete(pre=deleteme)
+    shared.db["conver"].delete(pro=deleteme)
+    shared.db["prew"].delete(pro=deleteme)
+    shared.db["noun"].delete(word=deleteme)
+    shared.db["beg"].delete(word=deleteme)
+    shared.db["end"].delete(word=deleteme)
+    await self.message(
+        c, f"word(s) deleted in {round(time.time()-starttime,2)} seconds"
+    )
+
+
 async def schans(self, c, n, m):
     self.chandb.delete()
     for i in self.channels:
@@ -246,6 +261,7 @@ commands = {
     "send": send,
     "joins": joins,
     "shut": shut,
+    "deleteword": deleteword,
     "schans": schans,
     "addalias": addalias,
     "addcommand": addcommand,
