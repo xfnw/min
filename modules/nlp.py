@@ -40,7 +40,7 @@ async def rec(self, m):
                 ),
                 ["id"],
             )
-        noch.insert(dict(word=w))
+        noch.insert(dict(word=get(words, w)))
 
 
 async def getNoun(self, words, c):
@@ -126,6 +126,8 @@ async def genOut(self, noun):
         shared.enmul += 1
     elif coun >= shared.maxiter:
         shared.enmul -= 1
+
+    print(f"coun {coun} enmul {shared.enmul} maxiter {shared.maxiter}")
 
     return out
 
