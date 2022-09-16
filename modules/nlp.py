@@ -141,7 +141,7 @@ async def filter(self, c, n, m):
     elif m[: len(self.nickname) + 1] == self.nickname + " ":
         m = m[len(self.nickname) + 1 :]
         await go(self, c, n, m)
-    elif "#" not in c and n != self.nickname:
+    elif c[0] not in self.isupport.chantypes and n != self.nickname:
         await go(self, c, n, m)
     else:
         if len(m.split()) > 1:
