@@ -1,0 +1,8 @@
+
+# details for SASL PLAIN
+username="min-placeholder-account"
+password="hunter2"
+
+# channels to autojoin
+channel=['##chaos']
+
