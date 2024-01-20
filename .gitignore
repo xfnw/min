@@ -3,8 +3,9 @@
 *.pyc
 __pycache__/
 *__pycache__*
-*.db-journal
+*.db-*
 sizelog
+env
 *journal
 
 auth.py
