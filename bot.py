@@ -135,18 +135,12 @@ async def main():
         "min",
         host="irc.libera.chat",
         port=6697,
-        tls=True,
         sasl=sasl_params,
         autojoin=channel,
     )
 
     await bot.add_server("libera", params)
 
-    params = ConnectionParams(
-        "min", host="manonet.lumey.dev", port=6697, tls=True, autojoin=["#manonet"]
-    )
-
-    await bot.add_server("manonet", params)
     await bot.run()
 
 
