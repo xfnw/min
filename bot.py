@@ -66,10 +66,10 @@ class Server(BaseServer):
             if listener[0] == line.command:
                 asyncio.create_task(listener[1](self, line))
 
-    async def line_preread(self, line: Line):
+    def line_preread(self, line: Line):
         print(f"{self.name} < {line.format()}")
 
-    async def line_presend(self, line: Line):
+    def line_presend(self, line: Line):
         print(f"{self.name} > {line.format()}")
 
     async def on_001(self, line):
